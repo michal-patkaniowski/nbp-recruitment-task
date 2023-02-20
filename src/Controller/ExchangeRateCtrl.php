@@ -4,32 +4,43 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use FOS\RestBundle\Controller\Annotations\Get;
-use FOS\RestBundle\Controller\Annotations\QueryParam;
-use FOS\RestBundle\Request\ParamFetcherInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use App\Nbp\NbpApiDataModel;
+use App\Nbp\NbpApiService;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Requirement\Requirement;
 use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\Validator\Constraints\Type;
 
 #[Route('')]
-final class ExchangeRateCtrl
+final class ExchangeRateCtrl extends AbstractController
 {
-    public function __construct(private SerializerInterface $serializer)
+    public function __construct(private SerializerInterface $serializer, private NbpApiService $nbpApiService)
     {
-        $this->serializer = $serializer;
     }
 
     #[
-        Get('/{currency}/{startDate}/{endDate}')
+        Route(
+            '/{currency}/{startDate}/{endDate}',
+            name: 'average_exchange_rate',
+            requirements: [
+                'currency' => 'USD|EUR|CHF|GBP',
+                'startDate' => Requirement::DATE_YMD,
+                'endDate' => Requirement::DATE_YMD,
+            ]
+        )
     ]
-    public function findPaginatedIptvEventsAction(Request $request, ParamFetcherInterface $paramFetcher): Response
-    {
-        $currency = $paramFetcher->get('currency');
-        $startDate = $paramFetcher->get('startDate');
-        $endDate = $paramFetcher->get('endDate');
-        return new Response($this->serializer->serialize('test test', 'json', ['groups' => ['sample_group']]));
+    public function getAverageExchangeRateAction(
+        Request $request,
+        string $currency,
+        string $startDate,
+        string $endDate
+    ): Response {
+        return new Response(
+            $this->serializer->serialize($this->nbpApiService->getNbpApiData($currency, $startDate, $endDate), 'json', [
+                'groups' => NbpApiDataModel::GROUP_AVERAGE,
+            ])
+        );
     }
 }
