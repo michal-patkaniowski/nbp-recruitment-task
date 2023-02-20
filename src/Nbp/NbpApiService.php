@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace App\Nbp;
 
+use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class NbpApiService
 {
-    private const API_URL = 'http://api.nbp.pl/api/exchangerates/rates/C/';
-    public function __construct(private SerializerInterface $serializer)
+    public function __construct(private SerializerInterface $serializer, private ContainerBagInterface $params)
     {
     }
 
     public function getNbpApiData(string $currency, string $startDate, string $endDate): NbpApiDataModel
     {
         $headers = ['Accept: application/json'];
-        $url = sprintf('%s%s/%s/%s', self::API_URL, $currency, $startDate, $endDate);
+        $url = sprintf('%s%s/%s/%s', $this->params->get('app.nbp_api_url'), $currency, $startDate, $endDate);
 
         return $this->serializer->deserialize($this->sendRequest($url, $headers), NbpApiDataModel::class, 'json');
     }
