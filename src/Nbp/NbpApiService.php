@@ -21,7 +21,6 @@ class NbpApiService
     {
         $headers = ['Accept: application/json'];
         $url = sprintf('%s%s/%s/%s', $this->params->get('app.nbp_api_url'), $currency, $startDate, $endDate);
-        $a = $this->sendRequest($url, $headers);
         return $this->serializer->deserialize($this->sendRequest($url, $headers), NbpApiDataModel::class, 'json');
     }
 
