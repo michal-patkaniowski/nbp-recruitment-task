@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Nbp;
 
-use ErrorException;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -17,11 +16,19 @@ class NbpApiService
     {
     }
 
-    public function getNbpApiData(string $currency, string $startDate, string $endDate): NbpApiDataModel
+    public function getNbpApiData(string $currency, string $startDate, string $endDate): Entity\NbpApiDataModel
     {
         $headers = ['Accept: application/json'];
-        $url = sprintf('%s%s/%s/%s', $this->params->get('app.nbp_api_url'), $currency, $startDate, $endDate);
-        return $this->serializer->deserialize($this->sendRequest($url, $headers), NbpApiDataModel::class, 'json');
+        $url = str_replace(
+            ['{currency}', '{startDate}', '{endDate}'],
+            [$currency, $startDate, $endDate],
+            $this->params->get('app.nbp_api_url')
+        );
+        return $this->serializer->deserialize(
+            $this->sendRequest($url, $headers),
+            Entity\NbpApiDataModel::class,
+            'json'
+        );
     }
 
     private function sendRequest(string $url, array $headers = []): bool|string

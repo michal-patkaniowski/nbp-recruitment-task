@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Nbp;
+namespace App\Nbp\Entity;
 
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
@@ -66,6 +66,6 @@ final class NbpApiDataModel
     public function getAverageRate(): float
     {
         $rateVals = array_map(static fn($item) => $item->getBid(), $this->rates);
-        return array_sum($rateVals) / count($rateVals);
+        return round(array_sum($rateVals) / count($rateVals), 4);
     }
 }

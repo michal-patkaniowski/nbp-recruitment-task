@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Nbp\NbpApiDataModel;
+use App\Nbp\Entity\NbpApiDataModel;
 use App\Nbp\NbpApiService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,10 +25,12 @@ final class ExchangeRateCtrl extends AbstractController
             '/{currency}/{startDate}/{endDate}',
             name: 'average_exchange_rate',
             requirements: [
-                'currency' => 'USD|EUR|CHF|GBP',
+                'currency' => "%app.nbp_allowed_currencies%",
                 'startDate' => Requirement::DATE_YMD,
                 'endDate' => Requirement::DATE_YMD,
-            ]
+            ],
+            methods: ['GET'],
+            condition: "service('exchange_rate_route_checker').checkDates(params)"
         )
     ]
     public function getAverageExchangeRateAction(
