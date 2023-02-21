@@ -34,7 +34,7 @@ Response:
 ## Installation
 Clone the repository to a folder.
 
-Change current directory to **nbp_recruitment-task**.
+Change current directory to **nbp-recruitment-task**.
 
 Install Symfony
 ```bash
