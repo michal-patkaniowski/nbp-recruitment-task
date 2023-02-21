@@ -1,7 +1,7 @@
 # nbp-recruitment-task
 This repository contains my recruitment task:
 
-##Task assumptions
+## Task assumptions
 Write a service that provides the calculated average buy rate based on data from the National Bank of
 Poland. The data downloaded from the NBP are: buy rate. Upload the code to a repository. The task
 should be done in PHP.
@@ -26,7 +26,7 @@ Response:
 “average_price”: 4,1505
 }
 
-##Installation
+## Installation
 Clone the repository to a folder.
 Change current directory to nbp_recruitment-task
 Install Symfony
