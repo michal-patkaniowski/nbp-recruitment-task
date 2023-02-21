@@ -25,7 +25,7 @@ final class ExchangeRateCtrl extends AbstractController
             '/{currency}/{startDate}/{endDate}',
             name: 'average_exchange_rate',
             requirements: [
-                'currency' => "%app.nbp_allowed_currencies%",
+                'currency' => '%app.nbp_allowed_currencies%',
                 'startDate' => Requirement::DATE_YMD,
                 'endDate' => Requirement::DATE_YMD,
             ],
@@ -33,12 +33,8 @@ final class ExchangeRateCtrl extends AbstractController
             condition: "service('exchange_rate_route_checker').checkDates(params)"
         )
     ]
-    public function getAverageExchangeRateAction(
-        Request $request,
-        string $currency,
-        string $startDate,
-        string $endDate
-    ): Response {
+    public function getAverageExchangeRateAction(string $currency, string $startDate, string $endDate): Response
+    {
         return new Response(
             $this->serializer->serialize($this->nbpApiService->getNbpApiData($currency, $startDate, $endDate), 'json', [
                 'groups' => NbpApiDataModel::GROUP_AVERAGE,
