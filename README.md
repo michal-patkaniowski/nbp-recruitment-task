@@ -11,12 +11,17 @@ Endpoint
 GET /{currency}/{startDate}/{endDate}/
 
 ● Supported currencies: USD, EUR, CHF, GBP
+
 ● startDate, endDate: format RRRR-MM-YY
 
 information and tips
+
 ● information and necessary tips to download data from the NBP on the website:
+
 ○ http://www.nbp.pl/home.aspx?f=/kursy/instrukcja_pobierania_kursow_walut.html
+
 ○ http://api.nbp.pl/
+
 ● start and end date rates are also to be taken into account
 
 Example
@@ -28,7 +33,9 @@ Response:
 
 ## Installation
 Clone the repository to a folder.
-Change current directory to nbp_recruitment-task
+
+Change current directory to **nbp_recruitment-task**.
+
 Install Symfony
 ```bash
 composer install
